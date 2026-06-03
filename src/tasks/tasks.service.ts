@@ -14,11 +14,12 @@ export class TasksService {
     });
   }
 
-  async findAll(): Promise<Task[]> {
-    return this.prisma.task.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
-  }
+async findAll(done?: boolean): Promise<Task[]> {
+  return this.prisma.task.findMany({
+    where: done !== undefined ? { done } : undefined,
+    orderBy: { createdAt: 'desc' },
+  });
+}
 
   async findOne(id: number): Promise<Task> {
     const task = await this.prisma.task.findUnique({ where: { id } });
